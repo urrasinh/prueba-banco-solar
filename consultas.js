@@ -60,7 +60,7 @@ const editar = async (datos) => {
         return error
     } 
 }
-    const realizaTransferencia = async (datos) => {
+ const transaccion = async (datos) => {
 
         const consultaRealizarTransferencia = {
             text: `INSERT INTO transferencias (emisor, receptor, monto, fecha) VALUES ($1, $2, $3, NOW()) RETURNING *`,
@@ -84,12 +84,30 @@ const editar = async (datos) => {
         return result.rows[0]
     } catch (error) {
         await client.query('ROLLBACK')
-        return error
+        console.log('Código de error: ' + e.code)
+		console.log('Detalle de error: ' + e.detail)
+		console.log('Tabla con error: ' + e.table)
     }
 }
-const consultaTransferencia = async () => {
+
+const consultaTransaccion = async () => {
+	const query = {
+		text: 'SELECT * FROM transferencias',	
+		rowMode: 'array',
+	}
+	try {
+		const result = await pool.query(query)
+		return result.rows
+	} catch (error) {
+		console.log(error.code)
+		return error
+	}
+}
+/*
+const consultaTransaccion = async () => {
     const consulta = {
-        text: 'SELECT * FROM transferencias'
+        text: 'SELECT * FROM transferencias',
+        rowMode: 'array',
     }
 
     try {
@@ -119,5 +137,5 @@ const consultaTransferencia = async () => {
     } catch (error) {        
         return error
     }
-}
-module.exports = { insertar, consultar, eliminar, editar, realizaTransferencia, consultaTransferencia }
+}*/
+module.exports = { insertar, consultar, eliminar, editar, transaccion, consultaTransaccion }

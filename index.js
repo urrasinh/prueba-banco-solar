@@ -2,7 +2,14 @@ const http = require('http')
 const fs = require('fs')
 const url = require('url')
 
-const { insertar, consultar, eliminar, editar, consultaTransferencia, realizaTransferencia } = require('./consultas')
+const { 
+    insertar,
+    consultar,
+    eliminar,
+    editar,
+    consultaTransaccion,
+    transaccion
+} = require('./consultas')
 
 
 
@@ -82,7 +89,7 @@ http.createServer(async (req, res) => {
             const bodyObject = JSON.parse(body)
             const datos = [bodyObject.emisor, bodyObject.receptor, bodyObject.monto]
 
-            const respuesta = await realizaTransferencia(datos)
+            const respuesta = await transaccion(datos)
 
             res.writeHead(201, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify(respuesta))
@@ -90,7 +97,7 @@ http.createServer(async (req, res) => {
     }
 
     if (req.url === '/transferencias' && req.method === 'GET') {
-        const registros = await consultaTransferencia()
+        const registros = await consultaTransaccion()
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(registros))
     }
