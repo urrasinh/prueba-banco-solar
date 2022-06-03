@@ -1,5 +1,13 @@
 # prueba-banco-solar
 
+El sistema debe permitir registrar nuevos usuarios con un balance inicial y basados en éstos,
+realizar transferencias de saldos entre ellos.
+
+### Dependencias 
+ ``pg: Versión 8.7.3``   
+Instalacion en terminal:   
+`` node install pg``  
+
 ## Persistencia de datos
 >
 > Creación bd  
